@@ -52,38 +52,38 @@ scaled_data <- scale(transpose)
 d <- dist(scaled_data)
 
 ## hierarchical clustering on the data by using complete linkage
-hc_complete <- hclust(d, 
+hc_complete <- hclust(d,
                       method = 'complete')
 ## Plot the dendograms for complete linkage
-plot(hc_complete, 
-     main = "Dendrogram for complete linkage", 
-     xlab = "Complete Linkage", 
+plot(hc_complete,
+     main = "Dendrogram for complete linkage",
+     xlab = "Complete Linkage",
      sub = "")
 
 ## hierarchical clustering on the data by using average linkage
-hc_average <- hclust(d, 
+hc_average <- hclust(d,
                      method = 'average')
 ## Plot the dendograms for average linkage
-plot(hc_average, 
-     main = "Dendrogram for average linkage", 
-     xlab = "Average Linkage", 
+plot(hc_average,
+     main = "Dendrogram for average linkage",
+     xlab = "Average Linkage",
      sub = "")
 
 ## hierarchical clustering on the data by using single linkage
-hc_single <- hclust(d, 
+hc_single <- hclust(d,
                     method = 'single')
 ## Plot the dendograms for single linkage
-plot(hc_single, 
-     main = "Dendrogram for single linkage", 
-     xlab = "Single Linkage", 
+plot(hc_single,
+     main = "Dendrogram for single linkage",
+     xlab = "Single Linkage",
      sub = "")
 
 ## Determine clusters for 2 groups (k=2) from all three methods
-hclusters_complete <- cutree(hc_complete, 
+hclusters_complete <- cutree(hc_complete,
                              k = 2)
-hclusters_average <- cutree(hc_average, 
+hclusters_average <- cutree(hc_average,
                             k = 2)
-hclusters_single <- cutree(hc_single, 
+hclusters_single <- cutree(hc_single,
                            k = 2)
 
 # Make three contingency tables
@@ -91,19 +91,19 @@ hclusters_single <- cutree(hc_single,
 complete <- data.frame(hclusters_complete)
 status <- c("healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy","diseased", "diseased", "diseased", "diseased", "diseased", "diseased", "diseased","diseased","diseased","diseased", "diseased", "diseased", "diseased", "diseased", "diseased", "diseased", "diseased","diseased","diseased","diseased")
 complete$status <- status
-table(true = status, 
+table(true = status,
       cluster_complete = hclusters_complete)
 
 ## Contingency table for average linkage
 average <- data.frame(hclusters_average)
 average$status <- status
-table(true = status, 
+table(true = status,
       cluster_average = hclusters_average)
 
 ## Contingency table for single linkage
 single <- data.frame(hclusters_single)
 single$status <- status
-table(true = status, 
+table(true = status,
       cluster_single = hclusters_single)
 ```
 
@@ -116,56 +116,56 @@ An alternative to using Euclidean distance is to use a correlation distance. The
 dd <- amap::Dist(scaled_data, method = 'correlation')
 
 ## hierarchical clustering on the data by using complete linkage
-cor_complete <- hclust(dd, 
-                       method ="complete")
+cor_complete <- hclust(dd,
+                       method = "complete")
 ## Plot the dendograms for average linkage by using a correlation distance
 plot(cor_complete,
-     main="Dendrogram for complete linkage \n when using correlation distance", 
-     xlab="Complete Linkage",
+     main = "Dendrogram for complete linkage \n when using correlation distance",
+     xlab = "Complete Linkage",
      sub = "")
 
 ## hierarchical clustering on the data by using average linkage
-cor_average <- hclust(dd, 
-                     method = 'average')
+cor_average <- hclust(dd,
+                      method = 'average')
 ## Plot the dendograms for average linkage by using a correlation distance
-plot(cor_average, 
-     main = "Dendrogram for average linkage \n when using a correlation distance", 
-     xlab = "Average Linkage", 
+plot(cor_average,
+     main = "Dendrogram for average linkage \n when using a correlation distance",
+     xlab = "Average Linkage",
      sub = "")
 
 ## hierarchical clustering on the data by using single linkage
-cor_single <- hclust(dd, 
-                    method = 'single')
+cor_single <- hclust(dd,
+                     method = 'single')
 ## Plot the dendograms for single linkage by using a correlation distance
-plot(cor_single, 
-     main = "Dendrogram for single linkage \n when using a correlation distance", 
-     xlab = "Single Linkage", 
+plot(cor_single,
+     main = "Dendrogram for single linkage \n when using a correlation distance",
+     xlab = "Single Linkage",
      sub = "")
 
 ## Determine clusters for 2 groups (k=2) from all three methods
-hcor_complete <- cutree(cor_complete, 
-                             k = 2)
-hcor_average <- cutree(cor_average, 
-                            k = 2)
-hcor_single <- cutree(cor_single, 
-                           k = 2)
+hcor_complete <- cutree(cor_complete,
+                        k = 2)
+hcor_average <- cutree(cor_average,
+                       k = 2)
+hcor_single <- cutree(cor_single,
+                      k = 2)
 
 # Make three contingency tables
 ## Contingency table for complete linkage
 complete2 <- data.frame(hcor_complete)
 complete2$status <- status
-table(true = status, 
+table(true = status,
       cluster_complete = hcor_complete)
 
 ## Contingency table for average linkage
 average2 <- data.frame(hcor_average)
 average2$status <- status
-table(true = status, 
+table(true = status,
       cluster_average = hcor_average)
 
 ## Contingency table for single linkage
 single2 <- data.frame(hcor_single)
 single2$status <- status
-table(true = status, 
+table(true = status,
       cluster_single = hcor_single)
 ```
