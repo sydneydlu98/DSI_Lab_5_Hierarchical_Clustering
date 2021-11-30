@@ -1,0 +1,94 @@
+---
+title: "DSI_Lab_5_Hierarchical_Clustering"
+author: "Dingxin Lu"
+date: "11/29/2021"
+output: 
+  html_document:
+   df_print: paged
+   toc: true 
+   toc_depth: 2  
+   number_sections: false
+   toc_float:
+     collapsed: true
+     smooth_scroll: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center")
+```
+
+```{r}
+## load the data
+data <- read.csv("Ch10Ex11.csv", header = FALSE)
+
+## load all the packages
+```
+
+# Problem 1
+
+Use the gene expression data in Ch10Ex11.csv that is provided for you on Canvas. This is gene expression data that consists of 40 tissue samples with measurements on 1,000 genes. The first 20 samples are from healthy patients, while the second 20 are from a diseased group.
+
+1. Load the data – note that there is no header so you will need to read this in without one. Note that rows in this dataset represent genes and columns subjects. You will need to transpose the data using the function t() before you cluster (as we would like to cluster subjects).
+2. Scale the data.
+3. Calculate the Euclidean distance between the observations.
+4. Perform hierarchical clustering on the data using the below linkages, and plot the dendograms for each linkage:
+* complete linkage
+* single linkage
+* average linkage
+5. Determine clusters for 2 groups from all three methods using cutree().
+6. Make three contingency tables for the results. A contingency table is a tabular representation of categorical data that typically shows the frequency of the combinations of the two variables (ie. a 2x2 table). Here we would like to show a table of our clustering versus the true disease status of the subjects. Create a variable of the disease status for the 40 tissue samples. Use the clustering that you obtained in the previous step. Create a table of the two variables using table(). Comment on what you observe.
+
+```{r}
+transpose <- t(data)
+scaled_data <- scale(transpose)
+d <- dist(scaled_data)
+
+hc_complete <- hclust(d, method = 'complete')
+plot(hc_complete)
+
+hc_average <- hclust(d, method = 'average')
+plot(hc_average)
+
+hc_single <- hclust(d, method = 'single')
+plot(hc_single)
+
+hclusters_complete <- cutree(hc_complete, k=2)
+hclusters_average <- cutree(hc_average, k=2)
+hclusters_single <- cutree(hc_single, k=2)
+
+complete <- data.frame(hclusters_complete)
+var <- c("healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy", "healthy","diseased", "diseased", "diseased", "diseased", "diseased", "diseased", "diseased","diseased","diseased","diseased", "diseased", "diseased", "diseased", "diseased", "diseased", "diseased", "diseased","diseased","diseased","diseased")
+complete$status <- var
+table(true=status, cluster=hclusters_complete)
+
+average <- data.frame(hclusters_average)
+average$status <- var
+table(true=status, cluster=hclusters_average)
+
+single<- data.frame(hclusters_single)
+single$status <- var
+table(true=status, cluster=hclusters_single)
+```
+
+
+# Problem 2
+An alternative to using Euclidean distance is to use a correlation distance. The function dist() does not support this, so we will use amap::Dist(). Perform steps 3-6 as above, except use amap::Dist() with method = 'correlation' for step 3.
+
+```{r}
+dd <- amap::Dist(scaled_data, method = 'correlation')
+
+cor_complete <- plot(hclust(dd, method ="complete"), main="Complete Linkage
+with Correlation - Based Distance ", xlab="", sub ="")
+
+cor_average <- plot(hclust(dd, method ='average'), main="Average Linkage
+with Correlation - Based Distance ", xlab="", sub ="")
+
+cor_single <- plot(hclust(dd, method ="single"), main=" Single Linkage
+with Correlation - Based Distance ", xlab="", sub ="")
+
+cutree(hc_complete, 3)
+
+cutree(hc_average, 3)
+
+cutree(hc_single, 3)
+```
